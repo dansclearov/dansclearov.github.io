@@ -2,6 +2,8 @@
 title: Notes on building LLM agents
 ---
 
+*May 2026*
+
 For the past year, I’ve worked in a startup on a system to autonomously backport (integrate new patches into older code) security patches to older packages across 5 ecosystems. This is what worked for me, not gospel. Also, the models got a lot better since then, yet a lot still applies. There is a cost to upgrading packages in big projects that involves breaking changes, so the idea of the startup was to provide drop-in replacements for the packages, with some additional security guarantees. The way we tackled this was in 3 main phases: test, patch, publish. First, fix up the environment so the tests pass to establish a baseline. Then backport the upstream patch. Verify tests still pass. Publish the new package to a private repo. This was a very interesting and complex task to automate. Take just the patch phase: as we’d backport multiple vulnerabilities, they could either depend on each other or not, they could be a false positive for the target version, or a breaking change. A patch could use newer API or newer versions of dependencies. The most common case: the code structure has drifted sometime between the target version release date and the patch date, sometimes drastically. I’ll exemplify some other sample issues along the way.
 
 ## Process / methodology
